@@ -1,10 +1,9 @@
 package com.ecommerce.springecommerce.model;
 
 import jakarta.persistence.*;
-import org.aspectj.lang.reflect.UnlockSignature;
 
 @Entity
-@Table(name = "productos")
+@Table(name = "templates/productos")
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
