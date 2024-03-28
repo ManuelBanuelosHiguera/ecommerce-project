@@ -5,6 +5,8 @@ import com.ecommerce.springecommerce.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.PanelUI;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,5 +34,10 @@ public class ProductoService implements IProductoService{
     @Override
     public void delete(Integer id) {
     productoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Producto> findAll() {
+        return productoRepository.findAll();
     }
 }

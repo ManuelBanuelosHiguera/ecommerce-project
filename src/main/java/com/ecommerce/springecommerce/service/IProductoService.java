@@ -2,6 +2,7 @@ package com.ecommerce.springecommerce.service;
 
 import com.ecommerce.springecommerce.model.Producto;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IProductoService {
@@ -9,5 +10,6 @@ public interface IProductoService {
     public Optional<Producto> get(Integer id);
     public void update(Producto producto);
     public void delete(Integer id);
+    public List<Producto> findAll();
 
 }
