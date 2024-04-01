@@ -2,6 +2,7 @@ package com.ecommerce.springecommerce.controller;
 
 import com.ecommerce.springecommerce.model.Producto;
 import com.ecommerce.springecommerce.model.Usuario;
+import com.ecommerce.springecommerce.service.IProductoService;
 import com.ecommerce.springecommerce.service.ProductoService;
 import com.ecommerce.springecommerce.service.UploadFileService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -22,18 +23,22 @@ public class ProductoController {
     private final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
 
     @Autowired
-    ProductoService productoService;
+    IProductoService productoService;
+
     @Autowired
     private UploadFileService upload;
+
     @GetMapping("")
     public String show(Model model){
         model.addAttribute("productos",productoService.findAll());
         return "/productos/show";
     }
+
     @GetMapping("/create")
     public String create(){
         return "productos/create";
     }
+
     @PostMapping("/save")
     public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
         LOGGER.info("Este es el objeto producto {}",producto);
@@ -45,19 +50,13 @@ public class ProductoController {
             String nombreImagen = upload.saveImage(file);
             producto.setImagen(nombreImagen);
         }else{
-            if (file.isEmpty()){//editar el producto pero no cambiar imagen
-                Producto p = new Producto();
-                p=productoService.get(producto.getId()).get();
-                producto.setImagen(p.getImagen());
-            }else{
-                String nombreImagen = upload.saveImage(file);
-                producto.setImagen(nombreImagen);
-            }
+
         }
 
         productoService.save(producto);
         return "redirect:/productos";
     }
+
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model){
         Producto producto = new Producto();
@@ -68,14 +67,38 @@ public class ProductoController {
         model.addAttribute("producto", producto);
         return "/productos/edit";
     }
+
     @PostMapping("/update")
-    public String update(Producto producto){
+    public String update(Producto producto, @RequestParam ("img") MultipartFile file) throws IOException {
+        if (file.isEmpty()){//editar el producto pero no cambiar imagen
+            Producto p = new Producto();
+            p=productoService.get(producto.getId()).get();
+            producto.setImagen(p.getImagen());
+        }else{//si editamos la imagen tambien
+
+            Producto p = new Producto();
+            p=productoService.get(producto.getId()).get();
+
+            if (!p.getImagen().equals("default.jpg")){ //eliminar cuando no sea la imagen por defecto
+                upload.deleteImage(p.getImagen());
+            }
+
+            String nombreImagen = upload.saveImage(file);
+            producto.setImagen(nombreImagen);
+        }
         productoService.update(producto);
         return "redirect:/productos";
     }
 
     @GetMapping("/delete/{id}")
     public String delete (@PathVariable Integer id){
+        Producto p = new Producto();
+        p=productoService.get(id).get();
+
+        if (!p.getImagen().equals("default.jpg")){ //eliminar cuando no sea la imagen por defecto
+            upload.deleteImage(p.getImagen());
+        }
+
         productoService.delete(id);
         return "redirect:/productos";
     }

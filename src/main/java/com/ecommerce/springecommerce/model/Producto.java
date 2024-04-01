@@ -3,7 +3,7 @@ package com.ecommerce.springecommerce.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "templates/productos")
+@Table(name = "productos")
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
