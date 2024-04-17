@@ -1,11 +1,10 @@
 package com.ecommerce.springecommerce.service;
 
 import com.ecommerce.springecommerce.model.Producto;
-import com.ecommerce.springecommerce.repository.ProductoRepository;
+import com.ecommerce.springecommerce.repository.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,31 +12,31 @@ import java.util.Optional;
 public class ProductoService implements IProductoService{
 
     @Autowired
-    private ProductoRepository productoRepository;
+    private IProductoRepository IProductoRepository;
 
     @Override
     public Producto save(Producto producto) {
-        return productoRepository.save(producto);
+        return IProductoRepository.save(producto);
     }
 
     @Override
     public Optional<Producto> get(Integer id) {
-        return productoRepository.findById(id);
+        return IProductoRepository.findById(id);
     }
 
     @Override
     public void update(Producto producto) {
-        productoRepository.save(producto);
+        IProductoRepository.save(producto);
 
     }
 
     @Override
     public void delete(Integer id) {
-    productoRepository.deleteById(id);
+    IProductoRepository.deleteById(id);
     }
 
     @Override
     public List<Producto> findAll() {
-        return productoRepository.findAll();
+        return IProductoRepository.findAll();
     }
 }
