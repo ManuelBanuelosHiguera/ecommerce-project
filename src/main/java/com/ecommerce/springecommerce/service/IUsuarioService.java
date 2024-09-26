@@ -9,5 +9,6 @@ import java.util.Optional;
 @Service
 public interface IUsuarioService {
     Optional<Usuario> findById(Integer id);
+    Usuario save (Usuario usuario);
 
 }
