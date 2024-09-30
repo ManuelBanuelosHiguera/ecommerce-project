@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Controller
 @RequestMapping("/usuario")
@@ -91,5 +92,11 @@ public class UsuarioController {
 
         model.addAttribute("sesion", session.getAttribute("idusuario"));
         return "usuario/detalleCompra";
+    }
+
+    @GetMapping("/cerrar")
+    public String cerrarSesion(HttpSession session){
+        session.removeAttribute("idusuario");
+        return "redirect:/";
     }
 }
